@@ -3,14 +3,56 @@ import sqlite3
 from flask import Flask, request, session, g, redirect, url_for, abort, \
     render_template, flash
 from contextlib import closing
+from flask.views import View, MethodView
+from testwebsite import app
+
+'''
+class ShowUsers(View):
+    def dispatch_request(self):
+        users = User.query.all()
+        return render_template('users.html', objects=users)
+
+app.add_url_rule('/users/', view_func=ShowUsers.as_view('show_users'))
+'''
 
 # configuration
 DATABASE = 'tmp/regulatory.db'
 DEBUG = True
+Testing = False
 SECRET_KEY = 'monkeysauce'
 USERNAME = 'admin'
 PASSWORD = 'default'
 
+users = ["bob", "fred", "Josh"]
+
+class HomePage(View):
+    def dispatch_request(self):
+        return render_template('homepage.html', users=users)
+
+app.add_url_rule('/', view_func=HomePage.as_view('home_page'))
+
+def home_page():
+    return "hello world"
+
+class BlockTemplate(View):
+    def dispatch_request(self):
+        return render_template('child_template.html')
+app.add_url_rule('/template/', view_func=BlockTemplate.as_view(('block_template')))
+
+class UserAPI(MethodView):
+    def get(self):
+        users = ["bob", "bobby", "bobbett"]
+        return users
+
+    def post(self):
+        return redirect(url_for('homepage'))
+
+    def dispatch_request(self):
+       return render_template('users.html', users=users)
+
+app.add_url_rule('/users/',  view_func=UserAPI.as_view('users'))
+
+'''
 # Create flaskr application
 app = Flask(__name__)
 app.config.from_object(__name__)
@@ -74,3 +116,4 @@ def logout():
 
 if __name__ == '__main__':
     app.run()
+'''
