@@ -3,6 +3,7 @@ __author__ = 'Stratadon'
 import sqlite3, time
 
 class database():
+
     def __init__(self, db):
         self.tables = {"products" : "products"}
         self.conn = sqlite3.connect(db)
@@ -14,13 +15,18 @@ class database():
         except KeyError, e:
             return e
 
-    def create_table(self, table, sql):
-        try:
-            self.c.execute(sql)
-            self.conn.commit()
-        except:
-            print "CREATE"
-            self.conn.rollback()
+    def init_db(self):
+        with open("schema.sql", "r") as f:
+            self.c.executescript(f.read())
+        self.conn.commit()
+
+    def add_product(self, values):
+        name, customer, pba, ports, silicon, notes = values
+        status = "Need Test Plan"
+        self.c.execute('''insert into products(name, customer, pba, ports, silicon, status, notes)
+                values(?, ?, ?, ?, ?, ?, ?)''', [name, customer, pba, ports,
+                                                 silicon, status, notes])
+        self.conn.commit()
 
     def select(self, s=None):
         if s == None:
@@ -45,19 +51,10 @@ class database():
 if __name__ == "__main__":
     import sqlite3 as lite
     import sys
-    print hello
     try:
 
-        db = database('regulatory.db')
+        db = database('website.db')
+        db.init_db()
 
-        sql = ''' CREATE TABLE IF NOT EXISTS Products (SUBID INTEGER PRIMARY KEY AUTOINCREMENT,
-                NAME TEXT, CUSTOMER TEXT, PBA TEXT, DATECOL DATE, NOTES TEXT)'''
-        db.c.execute(sql)
-        db.c.execute("""INSERT INTO Products(NAME, CUSTOMER, PBA, DATECOL, NOTES)
-                     VALUES('Spirit Falls', 'HP', 'H12345-001', DATE('NOW'), 'test test test')""" )
-        db.conn.commit()
-        rows = db.c.execute("SELECT * FROM Products")
-        for row in rows:
-            print row
     except:
         raise

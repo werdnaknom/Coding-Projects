@@ -1,1 +1,1 @@
-__author__ = 'Stratadon'
+__author__ = 'ammonk'
