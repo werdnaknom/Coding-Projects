@@ -1,0 +1,43 @@
+{% extends "header.html" %}
+{% block body %}
+    {% for message in get_flashed_messages() %}
+    <div class="alert alert-success">{{ message }}</div>
+    {% endfor %}
+    <form style="padding: 10px"  action="{{ url_for('add_product') }}" method="post">
+        <div class="input-group" style="padding: 5px">
+            <span class="input-group-addon" id="product-name">Product Name</span>
+            <input type="text" class="form-control" placeholder="Name" name="productname" aria-describedby="basic-addon1" value="{{request.form.productname}}">
+        </div>
+
+        <div class="dropdown"style="padding: 5px">
+                <div class="form-group">
+                    <label for="customer">Customer:</label>
+                    <select class="form-control" id="customer" name="customer">
+                        {% for c in customers %}
+                            <option value="{{c}}" >{{c}}</option>
+                        {% endfor%}
+                    </select>
+                </div>
+        </div>
+
+        <div class="dropdown"style="padding: 5px">
+                <div class="form-group">
+                    <label for="silicon">Silicon:</label>
+                    <select class="form-control" id="silicon" name="silicon">
+                        {% for s in silicon %}
+                            <option value="{{s}}">{{s}}</option>
+                        {% endfor%}
+                    </select>
+                </div>
+        </div>
+
+        <div class="form-group" style="padding: 5px">
+            <label for="notes">Notes:</label>
+            <textarea rows=5 class="form-control" placeholder="Additional Details..." id="notes" name="notes" value="{{request.form.note}}" ></textarea>
+        </div>
+
+        <div class='form-group' align="center">
+            <input type="submit" class="btn btn-primary" value="Submit">
+        </div>
+    </form>
+{% endblock %}

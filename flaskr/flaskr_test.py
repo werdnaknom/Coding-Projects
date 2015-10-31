@@ -1,7 +1,16 @@
+<<<<<<< HEAD
 import os
 import flaskr
 import unittest
 import tempfile
+=======
+__author__ = 'Stratadon'
+
+import os, flaskr
+import unittest
+import tempfile
+import flask
+>>>>>>> origin/master
 
 class FlaskrTestCase(unittest.TestCase):
 
@@ -15,6 +24,7 @@ class FlaskrTestCase(unittest.TestCase):
         os.close(self.db_fd)
         os.unlink(flaskr.app.config['DATABASE'])
 
+<<<<<<< HEAD
     def test_empty_db(self):
         rv = self.app.get('/')
         assert 'No entries here so far' in rv.data
@@ -26,6 +36,20 @@ class FlaskrTestCase(unittest.TestCase):
 
     def logout(self):
         return self.app.get('logout', follow_redirects=True)
+=======
+    def login(self, username, password):
+        return self.app.post('/login', data=dict(
+            username=username,
+            password=password
+            ), follow_redirects=True)
+
+    def logout(self):
+        return self.app.get('/logout', follow_redirects=True)
+
+    def test_empty_db(self):
+        rv = self.app.get('/')
+        assert 'No entries here so far' in rv.data
+>>>>>>> origin/master
 
     def test_login_logout(self):
         rv = self.login('admin', 'default')
@@ -42,10 +66,23 @@ class FlaskrTestCase(unittest.TestCase):
         rv = self.app.post('/add', data=dict(
             title='<Hello>',
             text='<strong>HTML</strong> allowed here'
+<<<<<<< HEAD
         ), follow_redirects=True)
+=======
+            ), follow_redirects=True)
+>>>>>>> origin/master
         assert 'No entries here so far' not in rv.data
         assert '&lt;Hello&gt;' in rv.data
         assert '<strong>HTML</strong> allowed here' in rv.data
 
+<<<<<<< HEAD
+=======
+    app = flask.Flask(__name__)
+
+    with app.test_request_context('/?name=Peter'):
+        assert flask.request.path == '/'
+        assert flask.request.args['name'] == 'Peter'
+
+>>>>>>> origin/master
 if __name__ == '__main__':
     unittest.main()

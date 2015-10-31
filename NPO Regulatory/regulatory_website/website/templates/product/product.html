@@ -1,0 +1,33 @@
+{% extends "header.html" %}
+{% block body %}
+    <div class="jumbotron">
+      <div class="container">
+          <h1>{{product}}</h1>
+      </div>
+    </div>
+    <ul class="nav nav-tabs">
+      <li role="presentation" class="active"><a href="#product_status">Overall Status</a></li>
+      <li role="presentation"><a href="#product_testplan">Test Plan</a></li>
+      <li role="presentation"><a href="#product_regulatory">Regulatory</a></li>
+    </ul>
+
+    <br>
+    <h1> Board Progress </h1>
+    {% for row in details %}
+        {% for r in row %}
+            {{r}}
+        {% endfor %}
+    {% endfor %}
+    <div class="progress">
+        <div class="progress-bar progress-bar-success" style="width: 99%">
+            <span class="sr-only">95% Complete (success)</span>
+        </div>
+        <div class="progress-bar progress-bar-warning progress-bar-striped" style="width: 1%">
+            <span class="sr-only">5% Complete (warning)</span>
+        </div>
+        <div class="progress-bar progress-bar-danger" style="width: 0%">
+            <span class="sr-only">0% Complete (danger)</span>
+        </div>
+    </div>
+
+{% endblock %}

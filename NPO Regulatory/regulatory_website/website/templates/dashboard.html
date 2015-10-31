@@ -1,0 +1,41 @@
+{% extends "header.html" %}
+{% block body %}
+
+        <!--<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main"> -->
+
+          <h1 class="sub-header">Products In Validation</h1>
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Submission ID</th>
+                  <th>Product Name</th>
+                  <th>Customer</th>
+                  <th>PBA</th>
+                  <th>Ports</th>
+                  <th>Silicon</th>
+                  <th>Status</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for p in products %}
+                    <tr>
+                      <td>{{ p[0] }}</td>
+                      <td>{{ p[1] }}</td>
+                      <td>{{ p[2] }}</td>
+                      <td>{{ p[3] }}</td>
+                      <td>{{ p[4] }}</td>
+                      <td>{{ p[5] }}</td>
+                      <td>{{ p[6] }}</td>
+                      <td><a href="/product/{{p[1]}}/">View Product</a></td>
+                    </tr>
+
+                {% endfor %}
+
+            </div>
+        <!-- </div> -->
+
+
+
+{% endblock %}
