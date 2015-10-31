@@ -16,10 +16,11 @@ class Content():
                         "Niantic",
                         "Powerville",
                         ]
-
-        self.TOC = [["Dashboard", "/"],
-                    ["Calendar", "/calendar/"],
-                    ["Products", "/products/"],
-                    ["Add Product", "/add_product/"],
+        ''' Content Name, Address, Page Class'''
+        self.TOC = [["Dashboard", "/", "dashboard"],
+                    ["Calendar", "/calendar/", "calendar"],
+                    ["Product List", "/products/", "products"],
+                    ["Add Product", "/add_product/", "addProduct"],
+                    ["Add Testplan", "/testplan/add_testplan", "Add Product Testplan"]
                     ]
         self.DATABASE = "db/website.db"

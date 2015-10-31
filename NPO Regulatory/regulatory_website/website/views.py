@@ -4,6 +4,7 @@ from flask.views import View, MethodView
 from flask import render_template, g, url_for, redirect, flash, request
 import website.db.database as datab
 from website import app
+import json
 from content_manager import Content
 
 CONTENT = Content()
@@ -50,7 +51,7 @@ class AddProduct(MethodView):
         customers = CONTENT.CUSTOMER
         silicon = CONTENT.SILICON
         TOC = CONTENT.TOC
-        return render_template('add_product.html', customers=customers, silicon=silicon, TOC=TOC,*args)
+        return json.dumps(dict(customer=customers, silicon=silicon))
 
     def post(self):
         try:
@@ -75,9 +76,16 @@ class AddProduct(MethodView):
         except Exception as e:
             flash(e)
         return redirect(url_for('add_product'))
-product_view = AddProduct.as_view('add_product')
-app.add_url_rule('/add_product/', view_func=product_view, methods=['GET',])
-app.add_url_rule('/add_product/', view_func=product_view, methods=['POST',])
+addProduct_view = AddProduct.as_view('add_product')
+app.add_url_rule('/add_product/', view_func=addProduct_view, methods=['GET',])
+app.add_url_rule('/add_product/', view_func=addProduct_view, methods=['POST',])
+
+class AddTestplan(MethodView):
+    def get(self, *args, **kwargs):
+        TOC = CONTENT.TOC
+        return render_template('/testplan/add_testplan.html', TOC=TOC)
+addTestplan_view = AddTestplan.as_view('add_testplan')
+app.add_url_rule('/testplan/add_testplan/', view_func=addTestplan_view, methods=['GET',])
 
 class Product(MethodView):
     def get(self, product):

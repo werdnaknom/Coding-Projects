@@ -1,4 +1,29 @@
 <!DOCTYPE html>
+<!-- Flask Code -->
+<!-- set up navbar with default pages
+  caption, href, id
+-->
+{% set nav_bar  =
+                    [["Dashboard", "/", "Dashboard"],
+                    ["Calendar", "/calendar/", "Calendar"],
+                    ["Product List", "/products/", "Products"],
+                    ["Add Product", "/add_product/", "AddProduct"],
+                    ["Add Testplan", "/testplan/add_testplan", "AddTestplan"]
+                    ]
+-%}
+<!-- set up sub navbar with modals
+  caption, modal
+ -->
+{% set sub_nav_bar = [[ "Add Product", "#addProductModal" ],
+                      [ "Add Testplan", "#addTestplanModal" ],
+                      ]
+-%}
+
+
+
+<!-- set the active page so we can change the nav accordingly -->
+{% set active_page = active_page|default('Dashboard') -%}
+
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -30,6 +55,7 @@
   </head>
 
   <body>
+
     <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container-fluid">
         <div class="navbar-header">
@@ -62,26 +88,19 @@
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar" id="spy-scroll-id">
           <ul class="nav nav-sidebar">
-            {% for i in TOC %}
-              <!--
-              {% if loop.index == 1 %}
-                <li class="active" ><a href={{i[1]}}>{{i[0]}}<span class="sr-only">(current)</span></a></li>
-              {% else%}
-                <li><a href={{i[1]}}>{{i[0]}}</a></li>
-              {% endif %}
-              -->
-              <li><a href={{i[1]}}>{{i[0]}}</a></li>
+            {% for caption, href, id in nav_bar %}
+              <li {% if id == active_page %} class="active" {% endif%}>
+                <a href="{{ href|e }}">{{ caption|e }}</a>
+                <span class="sr-only"></span>
+              </li>
             {% endfor %}
           </ul>
 
           <ul class="nav nav-sidebar">
-              <li data-toggle="modal" data-target="#addProductModal"><a>Add Product</a></li>
+            {% for caption, modal in sub_nav_bar %}
+              <li data-toggle="modal" data-target="{{ modal }}"><a>{{ caption }}</a></li>
+            {% endfor %}
 
-          </ul>
-          <ul class="nav nav-sidebar">
-            <li><a href="">Nav item again</a></li>
-            <li><a href="">One more nav</a></li>
-            <li><a href="">Another nav item</a></li>
           </ul>
         </div>
       </div>
@@ -91,7 +110,10 @@
         </div>
     </div>
 
+
+
     <!-- Add Product Modal -->
+    {% from "add_product.html" import AddProduct with context %}
     <div class="modal fade" id="addProductModal" tabindex="-1" role="dialog" aria-labelledby="addProductLabel">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -100,9 +122,25 @@
             <h4 class="modal-title" id="addProductLabel">Add Product</h4>
           </div>
           <div class="modal-body">
-            <form action="{{ url_for('add_product') }}" method="get">
-            {% include 'add_product.html' %}
-            </form>
+                {{ AddProduct() }}
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add Testplan Modal -->
+    <div class="modal fade" id="addTestplanModal" tabindex="-1" role="dialog" aria-labelledby="addTestplanLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="addTestplanLabel">Add Testplan</h4>
+          </div>
+          <div class="modal-body">
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -113,19 +151,23 @@
     </div>
 
 
-
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="{{url_for('static', filename='js/bootstrap.min.js')}}"></script>
-    <!-- TODO: this should get the active tab to show on the navbar
+
     <script type="text/javascript">
-        $('.nav li a').on('click', function() {
-        $(this).parent().parent().find('.active').removeClass('active');
-        $(this).parent().addClass('active');
-        });
+      $('#addProductModal').on('show.bs.modal', function(event){
+        var button = $(event.relatedTarget)
+        })
     </script>
+    <!--
+    #.get("{{url_for('add_product') }}", function(data){
+          var json =JSON.parse(data);
+          modal.find('#customer').val(json.customer)
+          modal.find('#silicon').val(json.silicon)
+          })
     -->
     </body>
   </html>

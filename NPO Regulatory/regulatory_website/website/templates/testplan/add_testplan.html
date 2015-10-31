@@ -1,21 +1,5 @@
-
-{% macro AddProduct() %}
-
-    {% set customers = ["OEMGEN",
-                        "Dell",
-                        "HP",
-                        "Lenovo",
-                        "SuperMicro",
-                        ]
-    -%}
-
-    {% set silicon = ["Fortville",
-                      "Sageville",
-                      "Red Rock Canyon",
-                      "Niantic",
-                      "Powerville",
-                      ]
-    -%}
+{% extends "header.html" %}
+{% block body %}
     {% for message in get_flashed_messages() %}
     <div class="alert alert-success">{{ message }}</div>
     {% endfor %}
@@ -34,16 +18,6 @@
                         {% endfor%}
                     </select>
                 </div>
-        </div>
-
-        <div class="input-group" style="padding: 5px">
-            <span class="input-group-addon" id=pba">PBA</span>
-            <input type="text" class="form-control" placeholder="H12345-001" name="pba" aria-describedby="basic-addon2" value="{{request.form.pba}}">
-        </div>
-
-        <div class="input-group" style="padding: 5px">
-            <span class="input-group-addon" id=ports">Ports</span>
-            <input type="text" class="form-control" placeholder="2" name="ports" aria-describedby="basic-addon2" value="{{request.form.ports}}">
         </div>
 
         <div class="dropdown"style="padding: 5px">
@@ -66,4 +40,4 @@
             <input type="submit" class="btn btn-primary" value="Submit">
         </div>
     </form>
-{% endmacro%}
+{% endblock %}
