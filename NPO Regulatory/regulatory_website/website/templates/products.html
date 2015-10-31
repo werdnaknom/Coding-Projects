@@ -2,7 +2,7 @@
 {% set active_page = 'Products' %}
 {% block body %}
 
-          <h1 class="page-header">Products</h1>
+          <h1 class="sub-header">Products</h1>
 
           <div class="table-responsive">
             <table class="table table-striped">
@@ -28,7 +28,7 @@
                       <td>{{ p[4] }}</td>
                       <td>{{ p[5] }}</td>
                       <td>{{ p[6] }}</td>
-                      <td><a href="/product/{{p[1]}}%20{{p[4]}}%20{{p[2]}}/">{{ p[1] }} </a></td>
+                      <td><a href="/product/{{p[1]}}%20{{p[4]}}%20{{p[2]}}/?pid={{p[0]}}"> View Product </a></td>
                     </tr>
 
                 {% endfor %}

@@ -75,7 +75,7 @@ class AddProduct(MethodView):
                               ports, silicon, notes])
         except Exception as e:
             flash(e)
-        return redirect(url_for('add_product'))
+        return redirect(url_for('products'))
 addProduct_view = AddProduct.as_view('add_product')
 app.add_url_rule('/add_product/', view_func=addProduct_view, methods=['GET',])
 app.add_url_rule('/add_product/', view_func=addProduct_view, methods=['POST',])
@@ -90,11 +90,14 @@ app.add_url_rule('/testplan/add_testplan/', view_func=addTestplan_view, methods=
 class Product(MethodView):
     def get(self, product):
         TOC = CONTENT.TOC
+        pid = request.args.get('pid')
         try:
-            details = g.db.c.execute("SELECT * FROM products WHERE name is '%s'" % product)
+            details = g.db.c.execute("SELECT * FROM products WHERE pid is '%s'" % pid)
+            regulatory = g.db.c.execute("SELECT * FROM regulatory")
+            #regulatory = "bob"
         except Exception as e:
             flash(e)
-        return render_template('product/product.html', details=details, product=product, TOC=TOC)
+        return render_template('product/product.html', details=details, pid=pid, regulatory=regulatory, product=product, TOC=TOC)
 app.add_url_rule('/product/<product>/', view_func=Product.as_view('product'))
 
 class ModalTest(MethodView):
