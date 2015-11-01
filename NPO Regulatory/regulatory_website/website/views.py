@@ -93,12 +93,19 @@ class Product(MethodView):
         pid = request.args.get('pid')
         try:
             details = g.db.c.execute("SELECT * FROM products WHERE pid is '%s'" % pid)
-            regulatory = g.db.c.execute("SELECT * FROM regulatory")
+            regulatory = g.db.c.execute("SELECT * FROM regulatory WHERE pid is '%s'" % pid)
             #regulatory = "bob"
         except Exception as e:
             flash(e)
         return render_template('product/product.html', details=details, pid=pid, regulatory=regulatory, product=product, TOC=TOC)
 app.add_url_rule('/product/<product>/', view_func=Product.as_view('product'))
+
+class ProductRegulatory(MethodView):
+    def get(self):
+        pid = request.args.get('pid')
+        TOC = CONTENT.TOC
+        return render_template('product/product_regulatory.html', pid=pid, TOC=TOC)
+app.add_url_rule('/product/<product>/#product_regulatory', view_func=ProductRegulatory.as_view('product_regulatory'))
 
 class ModalTest(MethodView):
     def get(self):

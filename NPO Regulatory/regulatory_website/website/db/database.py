@@ -63,7 +63,6 @@ if __name__ == "__main__":
     reg = db.c.execute("SELECT * FROM regulatory")
     for prod in reg:
         print prod
-    print "FUCK"
     try:
         '''
         db = database('website.db')
