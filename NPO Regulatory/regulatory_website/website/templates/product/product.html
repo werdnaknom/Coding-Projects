@@ -1,40 +1,26 @@
 {% extends "header.html" %}
 {% block body %}
-    <div class="jumbotron">
-      <div class="container">
-          <h1>{{product}}</h1>
-      </div>
-    </div>
-    <ul class="nav nav-tabs">
-      <li role="presentation" class="active"><a href="#product_status">Overall Status</a></li>
-      <li role="presentation"><a href="#product_testplan">Test Plan</a></li>
-      <li role="presentation"><a href="#product_regulatory">Regulatory</a></li>
-    </ul>
+    {% include 'product/header.html' %}
+    <div>
+      <!-- Nav tabs -->
+      <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a href="#overview" aria-controls="overview" role="tab" data-toggle="tab">Overview</a></li>
+        <li role="presentation"><a href="#testplan" aria-controls="testplan" role="tab" data-toggle="tab">Active Testplan</a></li>
+        <li role="presentation"><a href="#regulatory" aria-controls="regulatory" role="tab" data-toggle="tab">Regulatory</a></li>
+      </ul>
 
-    <br>
-    <h1> Board Progress </h1>
-    <h1> PID: {{ pid }} </h1>
-    {% for row in details %}
-        {% for r in row %}
-            {{r}}
-        {% endfor %}
-    {% endfor %}
-    <br>
-    {% for row in regulatory %}
-        {% for r in row %}
-            {{r}}
-        {% endfor %}
-    {% endfor %}
-    <div class="progress">
-        <div class="progress-bar progress-bar-success" style="width: 99%">
-            <span class="sr-only">95% Complete (success)</span>
+      <!-- Tab panes -->
+      <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="overview">
+            {% include 'product/product_status.html' %}
         </div>
-        <div class="progress-bar progress-bar-warning progress-bar-striped" style="width: 1%">
-            <span class="sr-only">5% Complete (warning)</span>
+        <div role="tabpanel" class="tab-pane" id="testplan">
+            {% include 'product/product_testplan.html' %}
         </div>
-        <div class="progress-bar progress-bar-danger" style="width: 0%">
-            <span class="sr-only">0% Complete (danger)</span>
+        <div role="tabpanel" class="tab-pane" id="regulatory">
+            {% include 'product/product_regulatory.html' %}
         </div>
+      </div>
     </div>
 
 {% endblock %}

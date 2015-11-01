@@ -11,6 +11,9 @@ class database():
         self.conn = sqlite3.connect(db)
         self.c = self.conn.cursor()
 
+    def close(self):
+        self.conn.close()
+
     def _sanitize(self, tablename):
         try:
             return self.tables[tablename.lower()]
@@ -30,30 +33,42 @@ class database():
                                                  silicon, status, notes])
         self.conn.commit()
 
-    def select(self, s=None):
-        if s == None:
-            s = "*"
-        try:
-            statement = "SELECT %s FROM regulatory" % s
-            print statement
-            self.c.execute("SELECT * from regulatory")
-        except:
-            print "SELECT"
+    def get_products(self):
+        products = self.c.execute(''' SELECT * FROM products ''')
+        return products
 
-
-    def insert(self, s):
-        print s
+    def get_product(self, pid):
+        product = dict()
         try:
-            self.c.execute("INSERT INTO regulatory VALUES (%s, %s )" % (s, time.strftime("%m/%d/%Y")))
-            self.conn.commit()
-        except:
-            print "INSERT"
-            self.conn.rollback()
+            details = self.c.execute("SELECT * FROM products WHERE pid is '%s'" % pid)
+            for i, item in enumerate(details.fetchone()):
+               product[details.description[i][0]] = item
+        except Exception as e:
+            print e
+        return product
+
+    def product_name(self, product):
+        name = "%s %s %s" % (product['name'], product['ports'], product['customer'])
+        return name
+
 
 if __name__ == "__main__":
     import sqlite3 as lite
     import sys
     db = database('website.db')
+
+    products = db.get_products()
+    #for prod in products:
+    #    print prod
+
+    product = db.get_product("1")
+    #for item in product:
+    #    print item
+    print product
+
+    name = db.product_name(product)
+    print name
+    """
     p = db.c.execute("SELECT * FROM products")
     for prod in p:
         print prod
@@ -71,3 +86,4 @@ if __name__ == "__main__":
 
     except:
         raise
+    """

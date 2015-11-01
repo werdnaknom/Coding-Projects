@@ -18,15 +18,15 @@ def before_request():
     g.db = datab.database('website/db/website.db')
 
 
-#@app.teardown_request
-#def teardown_request(exception):
-#    db = getattr(g, 'db', None)
-#    if db is not None:
-#        db.close()
+@app.teardown_request
+def teardown_request(exception):
+    db = getattr(g, 'db', None)
+    if db is not None:
+        db.close()
 
 class Dashboard(MethodView):
     def get(self):
-        products = g.db.c.execute("SELECT * FROM products")
+        products = g.db.get_products()
         TOC = CONTENT.TOC
         #products = ['bob', 'fred']
         return render_template('dashboard.html', products=products, TOC=TOC)
@@ -34,7 +34,7 @@ app.add_url_rule('/', view_func=Dashboard.as_view('dashboard'))
 
 class Products(MethodView):
     def get(self):
-        products = g.db.c.execute("SELECT * from Products")
+        products = g.db.get_products()
         TOC = CONTENT.TOC
         #products = ['bob', 'fred']
         return render_template('products.html', products=products, TOC=TOC)
@@ -92,25 +92,32 @@ class Product(MethodView):
         TOC = CONTENT.TOC
         pid = request.args.get('pid')
         try:
-            details = g.db.c.execute("SELECT * FROM products WHERE pid is '%s'" % pid)
+            details = g.db.get_product(pid)
+            name = g.db.product_name(details)
             regulatory = g.db.c.execute("SELECT * FROM regulatory WHERE pid is '%s'" % pid)
             #regulatory = "bob"
         except Exception as e:
             flash(e)
-        return render_template('product/product.html', details=details, pid=pid, regulatory=regulatory, product=product, TOC=TOC)
+        return render_template('product/product.html', pid=pid, regulatory=regulatory, product=details, TOC=TOC, name=name)
 app.add_url_rule('/product/<product>/', view_func=Product.as_view('product'))
 
-class ProductRegulatory(MethodView):
+class AddRegulatory(MethodView):
     def get(self):
+        TOC = CONTENT.TOC
         pid = request.args.get('pid')
-        TOC = CONTENT.TOC
-        return render_template('product/product_regulatory.html', pid=pid, TOC=TOC)
-app.add_url_rule('/product/<product>/#product_regulatory', view_func=ProductRegulatory.as_view('product_regulatory'))
+        details = g.db.get_product(pid)
+        name = g.db.product_name(details)
+        try:
+            list = g.db.c.execute("SELECT * FROM regulatory WHERE pid is '%s'" % pid)
+        except Exception as e:
+            flash(e)
+        return render_template('regulatory/add_job.html', name=name, TOC = TOC, pid = pid, list = list)
 
-class ModalTest(MethodView):
-    def get(self):
-        TOC = CONTENT.TOC
-        return render_template('modal_test.html', TOC=TOC)
-app.add_url_rule('/modal_test/', view_func=ModalTest.as_view('modal'))
-
+    def post(self):
+        try:
+            details = 1
+        except Exception as e:
+            flash(e)
+        return render_template('regulatory/add_job.html')
+app.add_url_rule('/product/add_job/', view_func=AddRegulatory.as_view('add_job'))
 

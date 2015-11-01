@@ -10,6 +10,15 @@ create table products (
   notes text
 );
 
+drop table if exists dashroll;
+create table dashroll (
+    did INTEGER PRIMARY KEY autoincrement,
+    roll INTEGER NOT NULL,
+    pid INTEGER NOT NULL,
+    description text,
+    FOREIGN KEY(pid) REFERENCES products(pid)
+);
+
 drop table if exists regulatory;
 create table regulatory (
   rid INTEGER PRIMARY KEY autoincrement,
@@ -161,4 +170,5 @@ create table regulatory_dip_and_dropout (
    pass_req text,
    status text
 );
+
 
