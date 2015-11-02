@@ -47,7 +47,7 @@ create table regulatory (
   FOREIGN KEY(e6_id) REFERENCES regulatory_flicker(id),
   FOREIGN KEY(e7_id) REFERENCES regulatory_pwr_freq_magnetic(id),
   FOREIGN KEY(e8_id) REFERENCES regulatory_pwr_line_conducted(id),
-  FOREIGN KEY(e9_id) REFERENCES regulatory_power_line_harmonics_id(id),
+  FOREIGN KEY(e9_id) REFERENCES regulatory_power_line_harmonics(id),
   FOREIGN KEY(e10_id) REFERENCES regulatory_radiated_emissions(id),
   FOREIGN KEY(e11_id) REFERENCES regulatory_radiated_immunity(id),
   FOREIGN KEY(e12_id) REFERENCES regulatory_telecom_port_conducted_emissions(id),
@@ -126,8 +126,8 @@ create table regulatory_pwr_line_conducted (
    status text
 );
 
-drop table if exists regulatory_power_line_harmonics_id;
-create table regulatory_power_line_harmonics_id (
+drop table if exists regulatory_power_line_harmonics;
+create table regulatory_power_line_harmonics (
    id INTEGER PRIMARY KEY autoincrement,
    system text,
    notes text,

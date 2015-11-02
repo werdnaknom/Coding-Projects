@@ -103,6 +103,7 @@ app.add_url_rule('/product/<product>/', view_func=Product.as_view('product'))
 
 class AddRegulatory(MethodView):
     def get(self):
+        tests = CONTENT.REGULATORY
         TOC = CONTENT.TOC
         pid = request.args.get('pid')
         details = g.db.get_product(pid)
@@ -111,11 +112,11 @@ class AddRegulatory(MethodView):
             list = g.db.c.execute("SELECT * FROM regulatory WHERE pid is '%s'" % pid)
         except Exception as e:
             flash(e)
-        return render_template('regulatory/add_job.html', name=name, TOC = TOC, pid = pid, list = list)
+        return render_template('regulatory/add_job.html', name=name, TOC = TOC, pid = pid, tests=tests, list = list)
 
     def post(self):
         try:
-            details = 1
+            jobn = request.form['jobn']
         except Exception as e:
             flash(e)
         return render_template('regulatory/add_job.html')
