@@ -7,7 +7,6 @@ class database():
     def __init__(self, db):
         self.tables = {"products" : "products",
                        "regulatory" : "regulatory",
-                       "submission id" : "submission"
                        }
         self.conn = sqlite3.connect(db)
         self.c = self.conn.cursor()
@@ -56,7 +55,6 @@ class database():
 if __name__ == "__main__":
     import sqlite3 as lite
     import sys
-    '''
     db = database('website.db')
 
     products = db.get_products()
@@ -70,7 +68,6 @@ if __name__ == "__main__":
 
     name = db.product_name(product)
     print name
-    '''
     """
     p = db.c.execute("SELECT * FROM products")
     for prod in p:
@@ -81,10 +78,12 @@ if __name__ == "__main__":
     reg = db.c.execute("SELECT * FROM regulatory")
     for prod in reg:
         print prod
-    """
     try:
+        '''
         db = database('website.db')
         db.init_db()
+        '''
 
     except:
         raise
+    """
