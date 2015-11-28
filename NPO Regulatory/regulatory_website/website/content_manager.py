@@ -3,7 +3,6 @@ __author__ = 'ammonk'
 
 class Content():
     def __init__(self):
-        ''' Customers '''
         self.CUSTOMER = ["OEMGEN",
                          "Dell",
                          "HP",
@@ -11,7 +10,6 @@ class Content():
                          "SuperMicro",
                          ]
 
-        ''' NIC Silicon '''
         self.SILICON = ["Fortville",
                         "Sageville",
                         "Red Rock Canyon",
@@ -25,9 +23,8 @@ class Content():
                     ["Add Product", "/add_product/", "addProduct"],
                     ["Add Testplan", "/testplan/add_testplan", "Add Product Testplan"]
                     ]
-
-        ''' Database '''
         self.DATABASE = "db/website.db"
+<<<<<<< HEAD
 
         ''' Regulatory
                 Name, Database Table, Description
@@ -99,3 +96,5 @@ class Content():
 
 
 
+=======
+>>>>>>> parent of f391f91... Regulatory Modifications
