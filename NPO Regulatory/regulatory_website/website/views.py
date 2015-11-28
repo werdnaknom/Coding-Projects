@@ -122,3 +122,10 @@ class AddRegulatory(MethodView):
         return render_template('regulatory/add_job.html')
 app.add_url_rule('/product/add_job/', view_func=AddRegulatory.as_view('add_job'))
 
+class CreateSubID(MethodView):
+    def get(self):
+        TOC = CONTENT.TOC
+        pid = request.args.get('pid')
+        details = g.db.get_product(pid)
+        name = g.db.product_name(details)
+        return render_template('product/create_SubID.html', name=name, TOC=TOC, details=details)

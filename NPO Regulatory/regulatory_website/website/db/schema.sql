@@ -19,6 +19,17 @@ create table dashroll (
     FOREIGN KEY(pid) REFERENCES products(pid)
 );
 
+drop table if exists submission;
+create table submission (
+    sid INTEGER PRIMARY KEY autoincrement,
+    did INTEGER NOT NULL,
+    pid INTEGER NOT NULL,
+    description text,
+    FOREIGN KEY(pid) REFERENCES products(pid)
+    FOREIGN KEY(did) REFERENCES dashroll(did)
+);
+
+
 drop table if exists regulatory;
 create table regulatory (
   rid INTEGER PRIMARY KEY autoincrement,
